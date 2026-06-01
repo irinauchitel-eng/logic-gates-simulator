@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סימולטור שערים לוגיים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&family=Heebo:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f5f1; --panel:#ffffff; --panel2:#f1f0ec; --border:#e4e2da;
+    --text:#23262b; --muted:#6b7280;
+    --on:#f5a623; --on-edge:#c77f12; --on-ink:#3d2600; --on-text:#b45309; --flow:#fff3d6;
+    --off:#b6bcc6; --accent:#2563eb; --carry:#0d9488;
+    --grid:rgba(0,0,0,.035);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text);
+    min-height:100vh; line-height:1.6;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 64px}
+
+  .reveal{opacity:0;transform:translateY(14px);animation:rise .6s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.reveal{animation:none;opacity:1;transform:none}.flow{display:none}}
+
+  header{margin-bottom:26px}
+  h1{font-family:'Rubik',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.5px}
+  h1 .dot{color:var(--on)}
+  .sub{color:var(--muted);font-size:15px;font-weight:300;margin-top:4px}
+
+  .label{font-family:'Rubik',sans-serif;font-size:13px;font-weight:500;color:var(--muted);
+    letter-spacing:.5px;margin:0 2px 10px;display:flex;align-items:center;gap:8px}
+  .label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--on);box-shadow:0 0 8px var(--on)}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;
+    background:var(--panel);color:var(--text);border:1px solid var(--border);
+    border-radius:8px;padding:9px 16px;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s,color .2s;letter-spacing:.5px}
+  .pill:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .pill:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .pill.active{background:var(--on);color:var(--on-ink);border-color:var(--on-edge);box-shadow:0 5px 16px -7px var(--on)}
+
+  .desc{background:var(--panel);border:1px solid var(--border);border-right:3px solid var(--on);
+    border-radius:8px;padding:10px 14px;margin-bottom:22px;font-size:15px;min-height:42px;
+    display:flex;align-items:center;gap:8px;transition:opacity .2s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .desc b{font-family:'JetBrains Mono',monospace;color:var(--on-text);font-weight:600}
+
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;
+    background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:18px 18px;
+    box-shadow:0 4px 20px -12px rgba(0,0,0,.25)}
+  .hint{text-align:center;color:var(--muted);font-size:13px;font-weight:300;margin:2px 0 6px}
+
+  .node{cursor:pointer}
+  .node circle{transition:fill .18s,stroke .18s}
+  .node:focus-visible circle{stroke:var(--accent)!important;stroke-width:3}
+  .node:hover circle{stroke:var(--accent)}
+  .flow{stroke:var(--flow);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-dasharray:1.5 11;animation:flow .9s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-12.5}}
+  .halo{fill:var(--on);opacity:0;pointer-events:none}
+  .halo.on{animation:halo 1.7s ease-in-out infinite}
+  @keyframes halo{0%,100%{opacity:.12}50%{opacity:.24}}
+  .tap{animation:tap 2.2s ease-in-out 3;transform-origin:center}
+  @keyframes tap{0%,100%{opacity:0}40%,60%{opacity:.55}}
+
+  .readout{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:22px 2px 18px}
+  .expr{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;direction:ltr}
+  .now{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--muted);direction:ltr;transition:color .2s}
+
+  table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:16px;
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+    box-shadow:0 2px 10px -8px rgba(0,0,0,.2)}
+  th,td{padding:11px 0;text-align:center}
+  th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:13px;letter-spacing:1px}
+  tbody tr{border-top:1px solid var(--border);transition:background .2s}
+  tbody tr td{transition:color .2s}
+  tbody tr.act{background:rgba(245,166,35,.16)}
+  tbody tr.act td{color:var(--on-text);font-weight:600}
+
+  .divider{display:flex;align-items:center;gap:14px;margin:44px 0 20px;color:var(--muted);
+    font-family:'Rubik',sans-serif;font-weight:500;font-size:16px}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .ha-inputs{display:flex;gap:10px;justify-content:center;margin:6px 0 18px}
+  .toggle{font-family:'JetBrains Mono',monospace;cursor:pointer;background:var(--panel);
+    border:1px solid var(--border);border-radius:12px;padding:12px 22px;text-align:center;
+    transition:transform .15s,box-shadow .2s,background .2s,border-color .2s;min-width:96px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .toggle:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .toggle .nm{font-size:12px;color:var(--muted);letter-spacing:1px}
+  .toggle .v{font-size:28px;font-weight:600;margin-top:2px;transition:color .2s}
+  .toggle.hi{background:var(--on);border-color:var(--on-edge);box-shadow:0 6px 18px -8px var(--on)}
+  .toggle.hi .nm{color:var(--on-ink);opacity:.75}
+  .toggle.hi .v{color:var(--on-ink)}
+
+  .ha-eq{text-align:center;font-family:'JetBrains Mono',monospace;font-size:18px;margin:4px 0 18px;direction:ltr}
+  .ha-eq b{color:var(--on-text)}
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+  .chip{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .chip .top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
+  .chip .gate{font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 7px;border-radius:5px;background:var(--panel2)}
+  .chip .big{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:600;margin-top:4px;transition:color .2s}
+  .chip.sum .big{color:var(--on-text)}
+  .chip.carry .big{color:var(--carry)}
+
+  footer{text-align:center;color:var(--muted);font-size:12px;font-weight:300;margin-top:40px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+  @media (max-width:520px){
+    .wrap{padding:24px 14px 48px}
+    h1{font-size:25px}
+    .expr{font-size:20px}
+    .pill{padding:8px 13px;font-size:13px}
+    .chips{grid-template-columns:1fr}
+    .toggle{min-width:0;flex:1;padding:11px 8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="reveal" style="animation-delay:.02s">
+    <h1>סימולטור שערים לוגיים<span class="dot">.</span></h1>
+    <p class="sub">בחרו שער, לחצו על הכניסות, וצפו כיצד הפלט וטבלת האמת משתנים בזמן אמת</p>
+  </header>
+
+  <p class="label reveal" style="animation-delay:.08s">בחרו שער לוגי</p>
+  <div class="pills reveal" id="pills" style="animation-delay:.12s" role="group" aria-label="בחירת שער לוגי"></div>
+  <div class="desc reveal" id="desc" style="animation-delay:.16s" aria-live="polite"></div>
+
+  <div class="panel reveal" style="animation-delay:.2s">
+    <p class="hint">לחצו על העיגולים A ו‑B כדי להחליף בין 0 ל‑1</p>
+    <svg id="circuit" width="100%" viewBox="0 0 480 230" role="img" aria-labelledby="circTitle">
+      <title id="circTitle">מעגל לוגי אינטראקטיבי</title>
+      <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="0" stdDeviation="3.4" flood-color="#f5a623" flood-opacity="0.75"/>
+        </filter>
+      </defs>
+      <circle id="halo" class="halo" cx="440" cy="117" r="33"></circle>
+      <g id="wires"></g>
+      <g id="gate"></g>
+      <text x="55" y="38" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">A</text>
+      <text x="55" y="204" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">B</text>
+      <text x="440" y="77" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">Y</text>
+      <g id="na" class="node" tabindex="0" role="button"><circle id="nac" cx="55" cy="75" r="24" stroke-width="2"/><text id="nav" x="55" y="75" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="22" font-weight="600"></text><circle class="tap" cx="55" cy="75" r="30" fill="none" stroke="#2563eb" stroke-width="2"/></g>
+      <g id="nb" class="node" tabindex="0" role="button"><circle id="nbc" cx="55" cy="160" r="24" stroke-width="2"/><text id="nbv" x="55" y="160" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="22" font-weight="600"></text></g>
+      <g id="no"><circle id="noc" cx="440" cy="117" r="27" stroke-width="2"/><text id="nov" x="440" y="117" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="24" font-weight="600"></text></g>
+    </svg>
+  </div>
+
+  <div class="readout reveal" style="animation-delay:.26s">
+    <span class="expr" id="expr"></span>
+    <span class="now" id="now"></span>
+  </div>
+
+  <table id="tt" class="reveal" style="animation-delay:.3s"><caption class="sr-only">טבלת האמת של השער הנבחר</caption></table>
+
+  <div class="divider reveal" style="animation-delay:.34s">בונוס · מחבר בינארי (Half-Adder)</div>
+  <p class="sub reveal" style="animation-delay:.36s;margin-bottom:14px">חיבור שתי ספרות בינאריות: שער XOR מחשב את ספרת הסכום, ושער AND מחשב את הנשא.</p>
+  <div class="ha-inputs reveal" style="animation-delay:.4s">
+    <div class="toggle" id="ha" tabindex="0" role="button" aria-label="כניסה A של המחבר"><div class="nm">A</div><div class="v" id="hav-a">0</div></div>
+    <div class="toggle" id="hb" tabindex="0" role="button" aria-label="כניסה B של המחבר"><div class="nm">B</div><div class="v" id="hav-b">0</div></div>
+  </div>
+  <p class="ha-eq reveal" id="ha-eq" style="animation-delay:.42s"></p>
+  <div class="chips reveal" style="animation-delay:.44s">
+    <div class="chip sum"><div class="top"><span>ספרת סכום (Sum)</span><span class="gate">A ⊕ B</span></div><div class="big" id="ha-sum">0</div></div>
+    <div class="chip carry"><div class="top"><span>נשא (Carry)</span><span class="gate">A · B</span></div><div class="big" id="ha-carry">0</div></div>
+  </div>
+  <table id="ha-tt" class="reveal" style="animation-delay:.48s"></table>
+
+  <footer class="reveal" style="animation-delay:.5s">נבנה ככלי עזר להוראת אלקטרוניקה ומחשבים · ניתן לאירוח חופשי ב‑GitHub Pages</footer>
+</div>
+
+<script>
+const GATES={
+ AND:{expr:'Y = A · B',n:2,f:(a,b)=>a&&b?1:0,d:'פלט 1 רק כאשר <b>שתי</b> הכניסות הן 1.'},
+ OR:{expr:'Y = A + B',n:2,f:(a,b)=>a||b?1:0,d:'פלט 1 כאשר <b>לפחות אחת</b> מהכניסות היא 1.'},
+ NOT:{expr:'Y = A\u0305',n:1,f:(a)=>a?0:1,d:'הופך את הערך — 0 הופך ל‑1 ו‑1 הופך ל‑0.'},
+ NAND:{expr:"Y = (A · B)'",n:2,f:(a,b)=>a&&b?0:1,d:'ההפך מ‑AND — פלט 0 רק כאשר שתי הכניסות 1. <b>שער אוניברסלי</b>.'},
+ NOR:{expr:"Y = (A + B)'",n:2,f:(a,b)=>a||b?0:1,d:'ההפך מ‑OR — פלט 1 רק כאשר שתי הכניסות 0. <b>שער אוניברסלי</b>.'},
+ XOR:{expr:'Y = A \u2295 B',n:2,f:(a,b)=>(a^b)?1:0,d:'פלט 1 כאשר הכניסות <b>שונות</b> זו מזו.'},
+ XNOR:{expr:"Y = (A \u2295 B)'",n:2,f:(a,b)=>(a^b)?0:1,d:'פלט 1 כאשר הכניסות <b>זהות</b> זו לזו.'}
+};
+const OUTX={AND:300,NAND:318,OR:318,NOR:336,XOR:330,XNOR:348,NOT:309};
+const INX={AND:200,NAND:200,OR:212,NOR:212,XOR:224,XNOR:224,NOT:200};
+const ON='#f5a623',OFF='#b6bcc6';
+let cur='AND',a=0,b=0;
+
+function gateSVG(t){
+ const st='#4b5563',fl='#ffffff';
+ let body='';
+ if(t==='AND'||t==='NAND') body=`<path d="M200,69 L252,69 A48,48 0 0 1 252,165 L200,165 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+ else if(t==='OR'||t==='NOR') body=`<path d="M198,69 Q230,117 198,165 Q280,160 318,117 Q280,74 198,69 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+ else if(t==='XOR'||t==='XNOR') body=`<path d="M210,69 Q242,117 210,165 Q292,160 330,117 Q292,74 210,69 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/><path d="M196,69 Q228,117 196,165" fill="none" stroke="${st}" stroke-width="2.5"/>`;
+ else if(t==='NOT') body=`<path d="M200,72 L200,162 L290,117 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+ const bub={NAND:309,NOR:327,XNOR:339,NOT:300}[t];
+ if(bub) body+=`<circle cx="${bub}" cy="117" r="9" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+ return body;
+}
+function wire(d,on){
+ let s=`<path d="${d}" fill="none" stroke="${on?ON:OFF}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" ${on?'filter="url(#glow)"':''}/>`;
+ if(on) s+=`<path class="flow" d="${d}"/>`;
+ return s;
+}
+function wiresSVG(t){
+ const g=GATES[t],ix=INX[t];let w='';
+ if(g.n===2){
+  w+=wire(`M79,75 L150,75 L150,95 L${ix},95`,a);
+  w+=wire(`M79,160 L150,160 L150,140 L${ix},140`,b);
+ } else {
+  w+=wire(`M79,75 L140,75 L140,117 L200,117`,a);
+ }
+ const out=g.n===2?g.f(a,b):g.f(a);
+ w+=wire(`M${OUTX[t]},117 L413,117`,out);
+ return w;
+}
+function paintNode(c,tx,val){
+ if(val){c.setAttribute('fill',ON);c.setAttribute('stroke','#c77f12');c.setAttribute('filter','url(#glow)');tx.setAttribute('fill','#3d2600');}
+ else{c.setAttribute('fill','#ffffff');c.setAttribute('stroke','#c7cdd6');c.removeAttribute('filter');tx.setAttribute('fill','#6b7280');}
+ tx.textContent=val;
+}
+function buildPills(){
+ const box=document.getElementById('pills');box.innerHTML='';
+ Object.keys(GATES).forEach(t=>{
+  const btn=document.createElement('button');
+  btn.className='pill'+(t===cur?' active':'');btn.textContent=t;
+  btn.setAttribute('aria-pressed',t===cur);
+  btn.onclick=()=>{cur=t;render();};box.appendChild(btn);
+ });
+}
+function buildTable(){
+ const g=GATES[cur];let h='';
+ if(g.n===2){
+  h='<thead><tr><th>A</th><th>B</th><th>Y</th></tr></thead><tbody>';
+  for(let i=0;i<2;i++)for(let j=0;j<2;j++){
+   const act=(i===a&&j===b)?' class="act"':'';
+   h+=`<tr${act}><td>${i}</td><td>${j}</td><td>${g.f(i,j)}</td></tr>`;
+  }
+ } else {
+  h='<thead><tr><th>A</th><th>Y</th></tr></thead><tbody>';
+  for(let i=0;i<2;i++){const act=(i===a)?' class="act"':'';h+=`<tr${act}><td>${i}</td><td>${g.f(i)}</td></tr>`;}
+ }
+ document.getElementById('tt').innerHTML=h+'</tbody>';
+}
+function setAria(){
+ const g=GATES[cur];
+ document.getElementById('na').setAttribute('aria-label',`כניסה A, ערך ${a}, לחצו לשינוי`);
+ if(g.n===2) document.getElementById('nb').setAttribute('aria-label',`כניסה B, ערך ${b}, לחצו לשינוי`);
+}
+function render(){
+ const g=GATES[cur];
+ document.querySelectorAll('.pill').forEach(x=>{const on=x.textContent===cur;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on);});
+ document.getElementById('desc').innerHTML='<span>'+g.d+'</span>';
+ document.getElementById('gate').innerHTML=gateSVG(cur);
+ document.getElementById('wires').innerHTML=wiresSVG(cur);
+ paintNode(document.getElementById('nac'),document.getElementById('nav'),a);
+ document.getElementById('nb').style.display=g.n===2?'':'none';
+ if(g.n===2) paintNode(document.getElementById('nbc'),document.getElementById('nbv'),b);
+ const out=g.n===2?g.f(a,b):g.f(a);
+ paintNode(document.getElementById('noc'),document.getElementById('nov'),out);
+ document.getElementById('halo').classList.toggle('on',!!out);
+ document.getElementById('expr').textContent=g.expr;
+ document.getElementById('now').textContent=g.n===2?`A=${a}, B=${b}  \u2192  Y=${out}`:`A=${a}  \u2192  Y=${out}`;
+ document.getElementById('now').style.color=out?'var(--on-text)':'var(--muted)';
+ buildTable();setAria();
+}
+function bindNode(id,fn){
+ const el=document.getElementById(id);
+ el.addEventListener('click',fn);
+ el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});
+}
+bindNode('na',()=>{a=a?0:1;render();});
+bindNode('nb',()=>{b=b?0:1;render();});
+
+let ha={a:0,b:0};
+function haSet(k){ha[k]=ha[k]?0:1;haRender();}
+function haTable(){
+ let h='<thead><tr><th>A</th><th>B</th><th>נשא</th><th>סכום</th></tr></thead><tbody>';
+ for(let i=0;i<2;i++)for(let j=0;j<2;j++){
+  const s=(i^j),c=(i&&j)?1:0;
+  const act=(i===ha.a&&j===ha.b)?' class="act"':'';
+  h+=`<tr${act}><td>${i}</td><td>${j}</td><td>${c}</td><td>${s}</td></tr>`;
+ }
+ document.getElementById('ha-tt').innerHTML=h+'</tbody>';
+}
+function haRender(){
+ const s=(ha.a^ha.b),c=(ha.a&&ha.b)?1:0;
+ document.getElementById('hav-a').textContent=ha.a;
+ document.getElementById('hav-b').textContent=ha.b;
+ document.getElementById('ha').classList.toggle('hi',!!ha.a);
+ document.getElementById('hb').classList.toggle('hi',!!ha.b);
+ document.getElementById('ha-sum').textContent=s;
+ document.getElementById('ha-carry').textContent=c;
+ document.getElementById('ha-eq').innerHTML=`${ha.a} + ${ha.b} = <b>${c}${s}</b><sub style="font-size:11px">2</sub>`;
+ haTable();
+}
+bindNode('ha',()=>haSet('a'));
+bindNode('hb',()=>haSet('b'));
+
+buildPills();render();haRender();
+</script>
+</body>
+</html>
