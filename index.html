@@ -44,11 +44,14 @@
   .pill:hover{border-color:var(--accent);transform:translateY(-2px)}
   .pill:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .pill.active{background:var(--on);color:var(--on-ink);border-color:var(--on-edge);box-shadow:0 5px 16px -7px var(--on)}
+  .pill[disabled]{opacity:.4;cursor:not-allowed}
+  .pill[disabled]:hover{border-color:var(--border);transform:none}
 
   .desc{background:var(--panel);border:1px solid var(--border);border-right:3px solid var(--on);
     border-radius:8px;padding:10px 14px;margin-bottom:22px;font-size:15px;min-height:42px;
     display:flex;align-items:center;gap:8px;transition:opacity .2s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
   .desc b{font-family:'JetBrains Mono',monospace;color:var(--on-text);font-weight:600}
+  .ninote{color:var(--muted);font-size:13px;font-weight:300;margin:-6px 2px 22px;min-height:20px}
 
   .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;
     background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:18px 18px;
@@ -64,17 +67,18 @@
   .halo{fill:var(--on);opacity:0;pointer-events:none}
   .halo.on{animation:halo 1.7s ease-in-out infinite}
   @keyframes halo{0%,100%{opacity:.12}50%{opacity:.24}}
-  .tap{animation:tap 2.2s ease-in-out 3;transform-origin:center}
+  .tap{animation:tap 2.2s ease-in-out 3;transform-origin:center;pointer-events:none}
   @keyframes tap{0%,100%{opacity:0}40%,60%{opacity:.55}}
 
   .readout{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:22px 2px 18px}
   .expr{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;direction:ltr}
+  .expr .ovl{border-top:2px solid currentColor;padding:3px 3px 0;display:inline-block;line-height:1}
   .now{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--muted);direction:ltr;transition:color .2s}
 
   table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:16px;
     background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
     box-shadow:0 2px 10px -8px rgba(0,0,0,.2)}
-  th,td{padding:11px 0;text-align:center}
+  th,td{padding:9px 0;text-align:center}
   th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:13px;letter-spacing:1px}
   tbody tr{border-top:1px solid var(--border);transition:background .2s}
   tbody tr td{transition:color .2s}
@@ -124,165 +128,194 @@
 <div class="wrap">
   <header class="reveal" style="animation-delay:.02s">
     <h1>סימולטור שערים לוגיים<span class="dot">.</span></h1>
-    <p class="sub">בחרו שער, לחצו על הכניסות, וצפו כיצד הפלט וטבלת האמת משתנים בזמן אמת</p>
+    <p class="sub">בחרו שער ומספר כניסות, לחצו על הכניסות, וצפו כיצד הפלט וטבלת האמת משתנים בזמן אמת</p>
   </header>
 
   <p class="label reveal" style="animation-delay:.08s">בחרו שער לוגי</p>
   <div class="pills reveal" id="pills" style="animation-delay:.12s" role="group" aria-label="בחירת שער לוגי"></div>
   <div class="desc reveal" id="desc" style="animation-delay:.16s" aria-live="polite"></div>
 
-  <div class="panel reveal" style="animation-delay:.2s">
-    <p class="hint">לחצו על העיגולים A ו‑B כדי להחליף בין 0 ל‑1</p>
-    <svg id="circuit" width="100%" viewBox="0 0 480 230" role="img" aria-labelledby="circTitle">
+  <p class="label reveal" style="animation-delay:.18s">מספר כניסות</p>
+  <div class="pills reveal" id="ninputs" style="animation-delay:.2s;margin-bottom:6px" role="group" aria-label="בחירת מספר כניסות"></div>
+  <div class="ninote reveal" id="ninote" style="animation-delay:.22s" aria-live="polite"></div>
+
+  <div class="panel reveal" style="animation-delay:.24s">
+    <p class="hint">לחצו על העיגולים (A, B, C, D) כדי להחליף בין 0 ל‑1</p>
+    <svg id="circuit" width="100%" viewBox="0 0 480 202" role="img" aria-labelledby="circTitle">
       <title id="circTitle">מעגל לוגי אינטראקטיבי</title>
       <defs>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
           <feDropShadow dx="0" dy="0" stdDeviation="3.4" flood-color="#f5a623" flood-opacity="0.75"/>
         </filter>
       </defs>
-      <circle id="halo" class="halo" cx="440" cy="117" r="33"></circle>
       <g id="wires"></g>
       <g id="gate"></g>
-      <text x="55" y="38" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">A</text>
-      <text x="55" y="204" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">B</text>
-      <text x="440" y="77" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">Y</text>
-      <g id="na" class="node" tabindex="0" role="button"><circle id="nac" cx="55" cy="75" r="24" stroke-width="2"/><text id="nav" x="55" y="75" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="22" font-weight="600"></text><circle class="tap" cx="55" cy="75" r="30" fill="none" stroke="#2563eb" stroke-width="2"/></g>
-      <g id="nb" class="node" tabindex="0" role="button"><circle id="nbc" cx="55" cy="160" r="24" stroke-width="2"/><text id="nbv" x="55" y="160" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="22" font-weight="600"></text></g>
-      <g id="no"><circle id="noc" cx="440" cy="117" r="27" stroke-width="2"/><text id="nov" x="440" y="117" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="24" font-weight="600"></text></g>
+      <g id="inodes"></g>
+      <g id="onode"></g>
     </svg>
   </div>
 
-  <div class="readout reveal" style="animation-delay:.26s">
+  <div class="readout reveal" style="animation-delay:.3s">
     <span class="expr" id="expr"></span>
     <span class="now" id="now"></span>
   </div>
 
-  <table id="tt" class="reveal" style="animation-delay:.3s"><caption class="sr-only">טבלת האמת של השער הנבחר</caption></table>
+  <table id="tt" class="reveal" style="animation-delay:.34s"><caption class="sr-only">טבלת האמת של השער הנבחר</caption></table>
 
-  <div class="divider reveal" style="animation-delay:.34s">בונוס · מחבר בינארי (Half-Adder)</div>
-  <p class="sub reveal" style="animation-delay:.36s;margin-bottom:14px">חיבור שתי ספרות בינאריות: שער XOR מחשב את ספרת הסכום, ושער AND מחשב את הנשא.</p>
-  <div class="ha-inputs reveal" style="animation-delay:.4s">
+  <div class="divider reveal" style="animation-delay:.4s">בונוס · מחבר בינארי (Half-Adder)</div>
+  <p class="sub reveal" style="animation-delay:.42s;margin-bottom:14px">חיבור שתי ספרות בינאריות: שער XOR מחשב את ספרת הסכום, ושער AND מחשב את הנשא.</p>
+  <div class="ha-inputs reveal" style="animation-delay:.44s">
     <div class="toggle" id="ha" tabindex="0" role="button" aria-label="כניסה A של המחבר"><div class="nm">A</div><div class="v" id="hav-a">0</div></div>
     <div class="toggle" id="hb" tabindex="0" role="button" aria-label="כניסה B של המחבר"><div class="nm">B</div><div class="v" id="hav-b">0</div></div>
   </div>
-  <p class="ha-eq reveal" id="ha-eq" style="animation-delay:.42s"></p>
-  <div class="chips reveal" style="animation-delay:.44s">
+  <p class="ha-eq reveal" id="ha-eq" style="animation-delay:.46s"></p>
+  <div class="chips reveal" style="animation-delay:.48s">
     <div class="chip sum"><div class="top"><span>ספרת סכום (Sum)</span><span class="gate">A ⊕ B</span></div><div class="big" id="ha-sum">0</div></div>
     <div class="chip carry"><div class="top"><span>נשא (Carry)</span><span class="gate">A · B</span></div><div class="big" id="ha-carry">0</div></div>
   </div>
-  <table id="ha-tt" class="reveal" style="animation-delay:.48s"></table>
+  <table id="ha-tt" class="reveal" style="animation-delay:.5s"></table>
 
-  <footer class="reveal" style="animation-delay:.5s">נבנה ככלי עזר להוראת אלקטרוניקה ומחשבים · ניתן לאירוח חופשי ב‑GitHub Pages</footer>
+  <footer class="reveal" style="animation-delay:.54s">נבנה ככלי עזר להוראת אלקטרוניקה ומחשבים · ניתן לאירוח חופשי ב‑GitHub Pages</footer>
 </div>
 
 <script>
+const LET=['A','B','C','D'];
+const ON='#f5a623';
+const sum=v=>v.reduce((a,x)=>a+x,0);
 const GATES={
- AND:{expr:'Y = A · B',n:2,f:(a,b)=>a&&b?1:0,d:'פלט 1 רק כאשר <b>שתי</b> הכניסות הן 1.'},
- OR:{expr:'Y = A + B',n:2,f:(a,b)=>a||b?1:0,d:'פלט 1 כאשר <b>לפחות אחת</b> מהכניסות היא 1.'},
- NOT:{expr:'Y = A\u0305',n:1,f:(a)=>a?0:1,d:'הופך את הערך — 0 הופך ל‑1 ו‑1 הופך ל‑0.'},
- NAND:{expr:"Y = (A · B)'",n:2,f:(a,b)=>a&&b?0:1,d:'ההפך מ‑AND — פלט 0 רק כאשר שתי הכניסות 1. <b>שער אוניברסלי</b>.'},
- NOR:{expr:"Y = (A + B)'",n:2,f:(a,b)=>a||b?0:1,d:'ההפך מ‑OR — פלט 1 רק כאשר שתי הכניסות 0. <b>שער אוניברסלי</b>.'},
- XOR:{expr:'Y = A \u2295 B',n:2,f:(a,b)=>(a^b)?1:0,d:'פלט 1 כאשר הכניסות <b>שונות</b> זו מזו.'},
- XNOR:{expr:"Y = (A \u2295 B)'",n:2,f:(a,b)=>(a^b)?0:1,d:'פלט 1 כאשר הכניסות <b>זהות</b> זו לזו.'}
+ AND:{multi:true,f:v=>v.every(x=>x)?1:0,sep:' · ',d:_=>'פלט 1 רק כאשר <b>כל</b> הכניסות הן 1.'},
+ OR:{multi:true,f:v=>v.some(x=>x)?1:0,sep:' + ',d:_=>'פלט 1 כאשר <b>לפחות אחת</b> מהכניסות היא 1.'},
+ NOT:{multi:false,f:v=>v[0]?0:1,d:_=>'הופך את הערך — 0 הופך ל‑1 ו‑1 הופך ל‑0. לשער זה תמיד כניסה אחת.'},
+ NAND:{multi:true,f:v=>v.every(x=>x)?0:1,sep:' · ',inv:true,d:_=>'ההפך מ‑AND — פלט 0 רק כאשר כל הכניסות 1. <b>שער אוניברסלי</b>.'},
+ NOR:{multi:true,f:v=>v.some(x=>x)?0:1,sep:' + ',inv:true,d:_=>'ההפך מ‑OR — פלט 1 רק כאשר כל הכניסות 0. <b>שער אוניברסלי</b>.'},
+ XOR:{multi:true,f:v=>(sum(v)%2)?1:0,sep:' \u2295 ',d:n=>n>2?'פלט 1 כאשר מספר הכניסות שערכן 1 הוא <b>אי‑זוגי</b>.':'פלט 1 כאשר הכניסות <b>שונות</b> זו מזו.'},
+ XNOR:{multi:true,f:v=>(sum(v)%2)?0:1,sep:' \u2295 ',inv:true,d:n=>n>2?'פלט 1 כאשר מספר הכניסות שערכן 1 הוא <b>זוגי</b>.':'פלט 1 כאשר הכניסות <b>זהות</b> זו לזו.'}
 };
-const OUTX={AND:300,NAND:318,OR:318,NOR:336,XOR:330,XNOR:348,NOT:309};
-const INX={AND:200,NAND:200,OR:212,NOR:212,XOR:224,XNOR:224,NOT:200};
-const ON='#f5a623',OFF='#b6bcc6';
-let cur='AND',a=0,b=0;
+let cur='AND', nSel=2, vals=[0,0], hinted=false;
 
-function gateSVG(t){
- const st='#4b5563',fl='#ffffff';
- let body='';
- if(t==='AND'||t==='NAND') body=`<path d="M200,69 L252,69 A48,48 0 0 1 252,165 L200,165 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
- else if(t==='OR'||t==='NOR') body=`<path d="M198,69 Q230,117 198,165 Q280,160 318,117 Q280,74 198,69 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
- else if(t==='XOR'||t==='XNOR') body=`<path d="M210,69 Q242,117 210,165 Q292,160 330,117 Q292,74 210,69 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/><path d="M196,69 Q228,117 196,165" fill="none" stroke="${st}" stroke-width="2.5"/>`;
- else if(t==='NOT') body=`<path d="M200,72 L200,162 L290,117 Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
- const bub={NAND:309,NOR:327,XNOR:339,NOT:300}[t];
- if(bub) body+=`<circle cx="${bub}" cy="117" r="9" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
- return body;
+function geo(n){
+ const span=(n-1)*58;
+ const gh=Math.max(48, span/2+26);
+ const cy=46+gh;
+ const H=Math.round(cy+gh+46);
+ const ys=[]; for(let i=0;i<n;i++) ys.push(Math.round(cy-span/2+i*58));
+ return {gh,cy:Math.round(cy),H,ys,top:Math.round(cy-gh),bot:Math.round(cy+gh)};
+}
+function gateSVG(t,g){
+ const st='#4b5563',fl='#ffffff',cy=g.cy,top=g.top,bot=g.bot;
+ let body='',outX=300,bub=null;
+ if(t==='AND'||t==='NAND'){
+  const r=g.gh, tip=252+r;
+  body=`<path d="M200,${top} L252,${top} A${r},${r} 0 0 1 252,${bot} L200,${bot} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+  outX=tip; if(t==='NAND'){bub=tip+9; outX=tip+18;}
+ } else if(t==='OR'||t==='NOR'){
+  const tip=318;
+  body=`<path d="M198,${top} Q228,${cy} 198,${bot} Q293,${bot} ${tip},${cy} Q293,${top} 198,${top} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+  outX=tip; if(t==='NOR'){bub=327; outX=336;}
+ } else if(t==='XOR'||t==='XNOR'){
+  const tip=330;
+  body=`<path d="M210,${top} Q240,${cy} 210,${bot} Q305,${bot} ${tip},${cy} Q305,${top} 210,${top} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/><path d="M196,${top} Q226,${cy} 196,${bot}" fill="none" stroke="${st}" stroke-width="2.5"/>`;
+  outX=tip; if(t==='XNOR'){bub=339; outX=348;}
+ } else if(t==='NOT'){
+  body=`<path d="M200,${cy-45} L200,${cy+45} L290,${cy} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+  bub=300; outX=309;
+ }
+ if(bub!==null) body+=`<circle cx="${bub}" cy="${cy}" r="9" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
+ return {svg:body,outX};
 }
 function wire(d,on){
- let s=`<path d="${d}" fill="none" stroke="${on?ON:OFF}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" ${on?'filter="url(#glow)"':''}/>`;
+ let s=`<path d="${d}" fill="none" stroke="${on?ON:'#b6bcc6'}" stroke-width="${on?3.6:3.2}" stroke-linecap="round" stroke-linejoin="round"/>`;
  if(on) s+=`<path class="flow" d="${d}"/>`;
  return s;
 }
-function wiresSVG(t){
- const g=GATES[t],ix=INX[t];let w='';
- if(g.n===2){
-  w+=wire(`M79,75 L150,75 L150,95 L${ix},95`,a);
-  w+=wire(`M79,160 L150,160 L150,140 L${ix},140`,b);
- } else {
-  w+=wire(`M79,75 L140,75 L140,117 L200,117`,a);
+function buildNodes(g,n){
+ let s='';
+ for(let i=0;i<n;i++){
+  const y=g.ys[i],v=vals[i];
+  const fill=v?ON:'#ffffff',stroke=v?'#c77f12':'#c7cdd6',tcol=v?'#3d2600':'#6b7280',flt=v?' filter="url(#glow)"':'';
+  s+=`<g class="node" data-i="${i}" tabindex="0" role="button" aria-label="כניסה ${LET[i]}, ערך ${v}, לחצו לשינוי">`
+   +`<circle cx="55" cy="${y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2"${flt}/>`
+   +`<text x="55" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="20" font-weight="600" fill="${tcol}">${v}</text>`
+   +`<text x="25" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="Rubik" font-size="14" font-weight="500" fill="#6b7280">${LET[i]}</text>`;
+  if(i===0 && !hinted) s+=`<circle class="tap" cx="55" cy="${y}" r="28" fill="none" stroke="#2563eb" stroke-width="2"/>`;
+  s+=`</g>`;
  }
- const out=g.n===2?g.f(a,b):g.f(a);
- w+=wire(`M${OUTX[t]},117 L413,117`,out);
- return w;
+ document.getElementById('inodes').innerHTML=s;
 }
-function paintNode(c,tx,val){
- if(val){c.setAttribute('fill',ON);c.setAttribute('stroke','#c77f12');c.setAttribute('filter','url(#glow)');tx.setAttribute('fill','#3d2600');}
- else{c.setAttribute('fill','#ffffff');c.setAttribute('stroke','#c7cdd6');c.removeAttribute('filter');tx.setAttribute('fill','#6b7280');}
- tx.textContent=val;
+function buildOutput(g,out){
+ const fill=out?ON:'#ffffff',stroke=out?'#c77f12':'#c7cdd6',tcol=out?'#3d2600':'#6b7280',flt=out?' filter="url(#glow)"':'';
+ document.getElementById('onode').innerHTML=
+  `<circle class="halo${out?' on':''}" cx="440" cy="${g.cy}" r="33"/>`
+  +`<text x="440" y="${g.cy-38}" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">Y</text>`
+  +`<circle cx="440" cy="${g.cy}" r="27" fill="${fill}" stroke="${stroke}" stroke-width="2"${flt}/>`
+  +`<text x="440" y="${g.cy}" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="24" font-weight="600" fill="${tcol}">${out}</text>`;
+}
+function exprFor(t,n){
+ if(t==='NOT') return 'Y = <span class="ovl">A</span>';
+ const inner=LET.slice(0,n).join(GATES[t].sep);
+ return GATES[t].inv?`Y = <span class="ovl">${inner}</span>`:`Y = ${inner}`;
 }
 function buildPills(){
  const box=document.getElementById('pills');box.innerHTML='';
  Object.keys(GATES).forEach(t=>{
-  const btn=document.createElement('button');
-  btn.className='pill'+(t===cur?' active':'');btn.textContent=t;
-  btn.setAttribute('aria-pressed',t===cur);
-  btn.onclick=()=>{cur=t;render();};box.appendChild(btn);
+  const b=document.createElement('button');
+  b.className='pill'+(t===cur?' active':'');b.textContent=t;b.setAttribute('aria-pressed',t===cur);
+  b.onclick=()=>{cur=t;render();};box.appendChild(b);
+ });
+ const nb=document.getElementById('ninputs');nb.innerHTML='';
+ [2,3,4].forEach(k=>{
+  const b=document.createElement('button');
+  b.className='pill';b.textContent=k;b.dataset.n=k;
+  b.onclick=()=>{nSel=k;render();};nb.appendChild(b);
  });
 }
-function buildTable(){
- const g=GATES[cur];let h='';
- if(g.n===2){
-  h='<thead><tr><th>A</th><th>B</th><th>Y</th></tr></thead><tbody>';
-  for(let i=0;i<2;i++)for(let j=0;j<2;j++){
-   const act=(i===a&&j===b)?' class="act"':'';
-   h+=`<tr${act}><td>${i}</td><td>${j}</td><td>${g.f(i,j)}</td></tr>`;
-  }
- } else {
-  h='<thead><tr><th>A</th><th>Y</th></tr></thead><tbody>';
-  for(let i=0;i<2;i++){const act=(i===a)?' class="act"':'';h+=`<tr${act}><td>${i}</td><td>${g.f(i)}</td></tr>`;}
+function buildTable(t,n){
+ const L=LET.slice(0,n);
+ let h='<thead><tr>'+L.map(x=>`<th>${x}</th>`).join('')+'<th>Y</th></tr></thead><tbody>';
+ for(let r=0;r<(1<<n);r++){
+  const bits=[];for(let i=0;i<n;i++) bits.push((r>>(n-1-i))&1);
+  const y=GATES[t].f(bits);
+  const act=bits.every((b,i)=>b===vals[i])?' class="act"':'';
+  h+=`<tr${act}>`+bits.map(b=>`<td>${b}</td>`).join('')+`<td>${y}</td></tr>`;
  }
  document.getElementById('tt').innerHTML=h+'</tbody>';
 }
-function setAria(){
- const g=GATES[cur];
- document.getElementById('na').setAttribute('aria-label',`כניסה A, ערך ${a}, לחצו לשינוי`);
- if(g.n===2) document.getElementById('nb').setAttribute('aria-label',`כניסה B, ערך ${b}, לחצו לשינוי`);
-}
 function render(){
- const g=GATES[cur];
- document.querySelectorAll('.pill').forEach(x=>{const on=x.textContent===cur;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on);});
- document.getElementById('desc').innerHTML='<span>'+g.d+'</span>';
- document.getElementById('gate').innerHTML=gateSVG(cur);
- document.getElementById('wires').innerHTML=wiresSVG(cur);
- paintNode(document.getElementById('nac'),document.getElementById('nav'),a);
- document.getElementById('nb').style.display=g.n===2?'':'none';
- if(g.n===2) paintNode(document.getElementById('nbc'),document.getElementById('nbv'),b);
- const out=g.n===2?g.f(a,b):g.f(a);
- paintNode(document.getElementById('noc'),document.getElementById('nov'),out);
- document.getElementById('halo').classList.toggle('on',!!out);
- document.getElementById('expr').textContent=g.expr;
- document.getElementById('now').textContent=g.n===2?`A=${a}, B=${b}  \u2192  Y=${out}`:`A=${a}  \u2192  Y=${out}`;
+ const t=cur, n=GATES[t].multi?nSel:1;
+ while(vals.length<n) vals.push(0);
+ vals.length=n;
+ const g=geo(n);
+ document.getElementById('circuit').setAttribute('viewBox',`0 0 480 ${g.H}`);
+ const gd=gateSVG(t,g);
+ document.getElementById('gate').innerHTML=gd.svg;
+ let w='';
+ for(let i=0;i<n;i++) w+=wire(`M77,${g.ys[i]} L215,${g.ys[i]}`,vals[i]);
+ const out=GATES[t].f(vals);
+ w+=wire(`M${gd.outX},${g.cy} L413,${g.cy}`,out);
+ document.getElementById('wires').innerHTML=w;
+ buildNodes(g,n); buildOutput(g,out); hinted=true;
+ document.querySelectorAll('#pills .pill').forEach(x=>{const on=x.textContent===cur;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on);});
+ document.querySelectorAll('#ninputs .pill').forEach(x=>{
+  const on=(+x.dataset.n===n)&&GATES[t].multi;
+  x.classList.toggle('active',on);
+  if(GATES[t].multi){x.removeAttribute('disabled');} else {x.setAttribute('disabled','');x.classList.remove('active');}
+ });
+ document.getElementById('ninote').textContent=GATES[t].multi?'':'לשער NOT יש כניסה אחת בלבד, לכן בחירת מספר הכניסות אינה זמינה עבורו.';
+ document.getElementById('desc').innerHTML='<span>'+GATES[t].d(n)+'</span>';
+ document.getElementById('expr').innerHTML=exprFor(t,n);
+ document.getElementById('now').textContent=LET.slice(0,n).map((x,i)=>x+'='+vals[i]).join(', ')+'  \u2192  Y='+out;
  document.getElementById('now').style.color=out?'var(--on-text)':'var(--muted)';
- buildTable();setAria();
+ buildTable(t,n);
 }
-function bindNode(id,fn){
- const el=document.getElementById(id);
- el.addEventListener('click',fn);
- el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});
-}
-bindNode('na',()=>{a=a?0:1;render();});
-bindNode('nb',()=>{b=b?0:1;render();});
+document.getElementById('inodes').addEventListener('click',e=>{const g=e.target.closest('.node');if(g){vals[+g.dataset.i]^=1;render();}});
+document.getElementById('inodes').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const g=e.target.closest('.node');if(g){e.preventDefault();vals[+g.dataset.i]^=1;render();}}});
 
 let ha={a:0,b:0};
 function haSet(k){ha[k]=ha[k]?0:1;haRender();}
 function haTable(){
  let h='<thead><tr><th>A</th><th>B</th><th>נשא</th><th>סכום</th></tr></thead><tbody>';
  for(let i=0;i<2;i++)for(let j=0;j<2;j++){
-  const s=(i^j),c=(i&&j)?1:0;
-  const act=(i===ha.a&&j===ha.b)?' class="act"':'';
+  const s=(i^j),c=(i&&j)?1:0,act=(i===ha.a&&j===ha.b)?' class="act"':'';
   h+=`<tr${act}><td>${i}</td><td>${j}</td><td>${c}</td><td>${s}</td></tr>`;
  }
  document.getElementById('ha-tt').innerHTML=h+'</tbody>';
@@ -298,8 +331,13 @@ function haRender(){
  document.getElementById('ha-eq').innerHTML=`${ha.a} + ${ha.b} = <b>${c}${s}</b><sub style="font-size:11px">2</sub>`;
  haTable();
 }
-bindNode('ha',()=>haSet('a'));
-bindNode('hb',()=>haSet('b'));
+function bindToggle(id,fn){
+ const el=document.getElementById(id);
+ el.addEventListener('click',fn);
+ el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});
+}
+bindToggle('ha',()=>haSet('a'));
+bindToggle('hb',()=>haSet('b'));
 
 buildPills();render();haRender();
 </script>
