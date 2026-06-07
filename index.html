@@ -13,55 +13,49 @@
     --text:#23262b; --muted:#6b7280;
     --on:#f5a623; --on-edge:#c77f12; --on-ink:#3d2600; --on-text:#b45309; --flow:#fff3d6;
     --off:#b6bcc6; --accent:#2563eb; --carry:#0d9488;
-    --grid:rgba(0,0,0,.035);
+    --ok:#0d6e66; --no:#b91c1c; --grid:rgba(0,0,0,.035);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
-  body{
-    font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text);
-    min-height:100vh; line-height:1.6;
-    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-    background-size:26px 26px;
-  }
+  body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:26px 26px}
   .wrap{max-width:760px;margin:0 auto;padding:32px 20px 64px}
-
   .reveal{opacity:0;transform:translateY(14px);animation:rise .6s cubic-bezier(.2,.7,.3,1) forwards}
   @keyframes rise{to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.reveal{animation:none;opacity:1;transform:none}.flow{display:none}}
-
-  header{margin-bottom:26px}
+  header{margin-bottom:22px}
   h1{font-family:'Rubik',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.5px}
   h1 .dot{color:var(--on)}
   .sub{color:var(--muted);font-size:15px;font-weight:300;margin-top:4px}
-
-  .label{font-family:'Rubik',sans-serif;font-size:13px;font-weight:500;color:var(--muted);
-    letter-spacing:.5px;margin:0 2px 10px;display:flex;align-items:center;gap:8px}
+  .label{font-family:'Rubik',sans-serif;font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.5px;margin:0 2px 10px;display:flex;align-items:center;gap:8px}
   .label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--on);box-shadow:0 0 8px var(--on)}
   .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-  .pill{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;
-    background:var(--panel);color:var(--text);border:1px solid var(--border);
+  .pill{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;background:var(--panel);color:var(--text);border:1px solid var(--border);
     border-radius:8px;padding:9px 16px;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s,color .2s;letter-spacing:.5px}
   .pill:hover{border-color:var(--accent);transform:translateY(-2px)}
   .pill:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .pill.active{background:var(--on);color:var(--on-ink);border-color:var(--on-edge);box-shadow:0 5px 16px -7px var(--on)}
   .pill[disabled]{opacity:.4;cursor:not-allowed}
   .pill[disabled]:hover{border-color:var(--border);transform:none}
-
-  .desc{background:var(--panel);border:1px solid var(--border);border-right:3px solid var(--on);
-    border-radius:8px;padding:10px 14px;margin-bottom:22px;font-size:15px;min-height:42px;
-    display:flex;align-items:center;gap:8px;transition:opacity .2s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .modes{margin-bottom:22px}
+  .modes .pill,.subtypes .pill{font-family:'Rubik',sans-serif;font-size:14px}
+  .subtypes{margin-bottom:18px}
+  .desc{background:var(--panel);border:1px solid var(--border);border-right:3px solid var(--on);border-radius:8px;padding:10px 14px;margin-bottom:22px;font-size:15px;min-height:42px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
   .desc b{font-family:'JetBrains Mono',monospace;color:var(--on-text);font-weight:600}
   .ninote{color:var(--muted);font-size:13px;font-weight:300;margin:-6px 2px 22px;min-height:20px}
-
-  .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;
-    background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:18px 18px;
-    box-shadow:0 4px 20px -12px rgba(0,0,0,.25)}
+  .qbar{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .qprompt{font-size:18px;font-weight:500}
+  .qprompt b{color:var(--on-text);font-family:'JetBrains Mono',monospace}
+  .stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .stats b{color:var(--text);font-weight:600}
+  .lvlnote{font-size:13px;color:var(--muted);margin-top:6px}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:18px 18px;box-shadow:0 4px 20px -12px rgba(0,0,0,.25)}
   .hint{text-align:center;color:var(--muted);font-size:13px;font-weight:300;margin:2px 0 6px}
-
   .node{cursor:pointer}
+  .node.nolock{cursor:default}
   .node circle{transition:fill .18s,stroke .18s}
   .node:focus-visible circle{stroke:var(--accent)!important;stroke-width:3}
-  .node:hover circle{stroke:var(--accent)}
+  .node:not(.nolock):hover circle{stroke:var(--accent)}
   .flow{stroke:var(--flow);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-dasharray:1.5 11;animation:flow .9s linear infinite}
   @keyframes flow{to{stroke-dashoffset:-12.5}}
   .halo{fill:var(--on);opacity:0;pointer-events:none}
@@ -69,30 +63,45 @@
   @keyframes halo{0%,100%{opacity:.12}50%{opacity:.24}}
   .tap{animation:tap 2.2s ease-in-out 3;transform-origin:center;pointer-events:none}
   @keyframes tap{0%,100%{opacity:0}40%,60%{opacity:.55}}
-
+  .answer{display:flex;gap:12px;justify-content:center;margin:18px 0 6px}
+  .abtn{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:600;width:104px;height:74px;border-radius:14px;border:1px solid var(--border);background:var(--panel);cursor:pointer;color:var(--text);transition:transform .15s,box-shadow .2s,border-color .2s;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .abtn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .abtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .options{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 6px}
+  .optbtn{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;padding:11px 20px;border-radius:10px;border:1px solid var(--border);background:var(--panel);cursor:pointer;color:var(--text);transition:transform .15s,border-color .2s}
+  .optbtn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .optbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .checkbtn{display:block;margin:18px auto 6px;font-family:'Rubik',sans-serif;font-size:15px;font-weight:500;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;cursor:pointer;transition:transform .15s}
+  .checkbtn:hover{transform:translateY(-2px)}
+  .checkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .feedback{text-align:center;padding:13px 14px;border-radius:12px;margin:8px 0 14px;font-size:15px;font-weight:500}
+  .feedback.ok{background:rgba(13,110,102,.12);color:var(--ok);border:1px solid rgba(13,110,102,.3)}
+  .feedback.no{background:rgba(185,28,28,.10);color:var(--no);border:1px solid rgba(185,28,28,.26)}
+  .feedback .rule{display:block;margin-top:6px;color:var(--muted);font-size:13px;font-weight:400}
+  .feedback .rule b{color:var(--on-text);font-family:'JetBrains Mono',monospace}
+  .nextbtn{display:block;margin:0 auto 6px;font-family:'Rubik',sans-serif;font-size:15px;font-weight:500;background:var(--on);color:var(--on-ink);border:1px solid var(--on-edge);border-radius:10px;padding:11px 28px;cursor:pointer;transition:transform .15s;box-shadow:0 5px 16px -7px var(--on)}
+  .nextbtn:hover{transform:translateY(-2px)}
+  .nextbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .readout{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:22px 2px 18px}
   .expr{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;direction:ltr}
   .expr .ovl{border-top:2px solid currentColor;padding:3px 3px 0;display:inline-block;line-height:1}
   .now{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--muted);direction:ltr;transition:color .2s}
-
-  table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:16px;
-    background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
-    box-shadow:0 2px 10px -8px rgba(0,0,0,.2)}
+  table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:16px;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px -8px rgba(0,0,0,.2)}
   th,td{padding:9px 0;text-align:center}
   th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:13px;letter-spacing:1px}
   tbody tr{border-top:1px solid var(--border);transition:background .2s}
-  tbody tr td{transition:color .2s}
+  tbody tr td{transition:color .2s,background .2s}
   tbody tr.act{background:rgba(245,166,35,.16)}
   tbody tr.act td{color:var(--on-text);font-weight:600}
-
-  .divider{display:flex;align-items:center;gap:14px;margin:44px 0 20px;color:var(--muted);
-    font-family:'Rubik',sans-serif;font-weight:500;font-size:16px}
+  td.ycell button{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;width:46px;height:34px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);cursor:pointer;color:var(--text);transition:.15s}
+  td.ycell button:hover{border-color:var(--accent)}
+  td.ycell button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  td.cok{background:rgba(13,110,102,.16);color:var(--ok);font-weight:700}
+  td.cno{background:rgba(185,28,28,.12);color:var(--no);font-weight:700}
+  .divider{display:flex;align-items:center;gap:14px;margin:44px 0 20px;color:var(--muted);font-family:'Rubik',sans-serif;font-weight:500;font-size:16px}
   .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-
   .ha-inputs{display:flex;gap:10px;justify-content:center;margin:6px 0 18px}
-  .toggle{font-family:'JetBrains Mono',monospace;cursor:pointer;background:var(--panel);
-    border:1px solid var(--border);border-radius:12px;padding:12px 22px;text-align:center;
-    transition:transform .15s,box-shadow .2s,background .2s,border-color .2s;min-width:96px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .toggle{font-family:'JetBrains Mono',monospace;cursor:pointer;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 22px;text-align:center;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s;min-width:96px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
   .toggle:hover{border-color:var(--accent);transform:translateY(-2px)}
   .toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .toggle .nm{font-size:12px;color:var(--muted);letter-spacing:1px}
@@ -100,7 +109,6 @@
   .toggle.hi{background:var(--on);border-color:var(--on-edge);box-shadow:0 6px 18px -8px var(--on)}
   .toggle.hi .nm{color:var(--on-ink);opacity:.75}
   .toggle.hi .v{color:var(--on-ink)}
-
   .ha-eq{text-align:center;font-family:'JetBrains Mono',monospace;font-size:18px;margin:4px 0 18px;direction:ltr}
   .ha-eq b{color:var(--on-text)}
   .chips{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
@@ -110,236 +118,316 @@
   .chip .big{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:600;margin-top:4px;transition:color .2s}
   .chip.sum .big{color:var(--on-text)}
   .chip.carry .big{color:var(--carry)}
-
   footer{text-align:center;color:var(--muted);font-size:12px;font-weight:300;margin-top:40px}
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-
-  @media (max-width:520px){
-    .wrap{padding:24px 14px 48px}
-    h1{font-size:25px}
-    .expr{font-size:20px}
-    .pill{padding:8px 13px;font-size:13px}
-    .chips{grid-template-columns:1fr}
-    .toggle{min-width:0;flex:1;padding:11px 8px}
-  }
+  @media (max-width:520px){.wrap{padding:24px 14px 48px}h1{font-size:25px}.expr{font-size:20px}.pill{padding:8px 13px;font-size:13px}.chips{grid-template-columns:1fr}.toggle{min-width:0;flex:1;padding:11px 8px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="reveal" style="animation-delay:.02s">
     <h1>סימולטור שערים לוגיים<span class="dot">.</span></h1>
-    <p class="sub">בחרו שער ומספר כניסות, לחצו על הכניסות, וצפו כיצד הפלט וטבלת האמת משתנים בזמן אמת</p>
+    <p class="sub">חקרו את השערים בחופשיות, או עברו למצב אתגר ובדקו את עצמכם</p>
   </header>
 
-  <p class="label reveal" style="animation-delay:.08s">בחרו שער לוגי</p>
-  <div class="pills reveal" id="pills" style="animation-delay:.12s" role="group" aria-label="בחירת שער לוגי"></div>
-  <div class="desc reveal" id="desc" style="animation-delay:.16s" aria-live="polite"></div>
+  <div class="pills modes reveal" id="modes" style="animation-delay:.06s" role="group" aria-label="בחירת מצב">
+    <button class="pill active" data-mode="explore" aria-pressed="true">מצב חקירה</button>
+    <button class="pill" data-mode="challenge" aria-pressed="false">מצב אתגר</button>
+  </div>
 
-  <p class="label reveal" style="animation-delay:.18s">מספר כניסות</p>
-  <div class="pills reveal" id="ninputs" style="animation-delay:.2s;margin-bottom:6px" role="group" aria-label="בחירת מספר כניסות"></div>
-  <div class="ninote reveal" id="ninote" style="animation-delay:.22s" aria-live="polite"></div>
+  <div id="exploreCtl">
+    <p class="label reveal" style="animation-delay:.1s">בחרו שער לוגי</p>
+    <div class="pills reveal" id="pills" style="animation-delay:.12s" role="group" aria-label="בחירת שער לוגי"></div>
+    <div class="desc reveal" id="desc" style="animation-delay:.16s" aria-live="polite"></div>
+    <p class="label reveal" style="animation-delay:.18s">מספר כניסות</p>
+    <div class="pills reveal" id="ninputs" style="animation-delay:.2s;margin-bottom:6px" role="group" aria-label="בחירת מספר כניסות"></div>
+    <div class="ninote reveal" id="ninote" style="animation-delay:.22s" aria-live="polite"></div>
+  </div>
 
-  <div class="panel reveal" style="animation-delay:.24s">
-    <p class="hint">לחצו על העיגולים (A, B, C, D) כדי להחליף בין 0 ל‑1</p>
+  <div id="challengeCtl" style="display:none">
+    <div class="pills subtypes" id="subtypes" role="group" aria-label="בחירת סוג אתגר">
+      <button class="pill active" data-ct="predict" aria-pressed="true">נחש פלט</button>
+      <button class="pill" data-ct="identify" aria-pressed="false">נחש שער</button>
+      <button class="pill" data-ct="fill" aria-pressed="false">השלם טבלה</button>
+    </div>
+    <div class="qbar">
+      <div class="qprompt" id="qprompt" aria-live="polite"></div>
+      <div class="stats" id="stats"></div>
+      <div class="lvlnote" id="lvlnote"></div>
+    </div>
+  </div>
+
+  <div class="panel reveal" id="panel" style="animation-delay:.24s">
+    <p class="hint" id="hint"></p>
     <svg id="circuit" width="100%" viewBox="0 0 480 202" role="img" aria-labelledby="circTitle">
       <title id="circTitle">מעגל לוגי אינטראקטיבי</title>
-      <defs>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="0" stdDeviation="3.4" flood-color="#f5a623" flood-opacity="0.75"/>
-        </filter>
-      </defs>
-      <g id="wires"></g>
-      <g id="gate"></g>
-      <g id="inodes"></g>
-      <g id="onode"></g>
+      <defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="0" stdDeviation="3.4" flood-color="#f5a623" flood-opacity="0.75"/></filter></defs>
+      <g id="wires"></g><g id="gate"></g><g id="inodes"></g><g id="onode"></g>
     </svg>
   </div>
 
-  <div class="readout reveal" style="animation-delay:.3s">
+  <div id="answerArea" style="display:none">
+    <div class="answer" id="answerBtns"><button class="abtn" data-g="0">0</button><button class="abtn" data-g="1">1</button></div>
+    <div class="options" id="optionsWrap"></div>
+    <div id="checkWrap"></div>
+    <div id="feedbackWrap"></div>
+  </div>
+
+  <div class="readout reveal" id="readout" style="animation-delay:.3s">
     <span class="expr" id="expr"></span>
     <span class="now" id="now"></span>
   </div>
 
-  <table id="tt" class="reveal" style="animation-delay:.34s"><caption class="sr-only">טבלת האמת של השער הנבחר</caption></table>
+  <table id="tt" class="reveal" style="animation-delay:.34s"><caption class="sr-only">טבלת אמת</caption></table>
 
-  <div class="divider reveal" style="animation-delay:.4s">בונוס · מחבר בינארי (Half-Adder)</div>
-  <p class="sub reveal" style="animation-delay:.42s;margin-bottom:14px">חיבור שתי ספרות בינאריות: שער XOR מחשב את ספרת הסכום, ושער AND מחשב את הנשא.</p>
-  <div class="ha-inputs reveal" style="animation-delay:.44s">
-    <div class="toggle" id="ha" tabindex="0" role="button" aria-label="כניסה A של המחבר"><div class="nm">A</div><div class="v" id="hav-a">0</div></div>
-    <div class="toggle" id="hb" tabindex="0" role="button" aria-label="כניסה B של המחבר"><div class="nm">B</div><div class="v" id="hav-b">0</div></div>
+  <div id="bonus">
+    <div class="divider reveal" style="animation-delay:.4s">בונוס · מחבר בינארי (Half-Adder)</div>
+    <p class="sub reveal" style="animation-delay:.42s;margin-bottom:14px">חיבור שתי ספרות בינאריות: שער XOR מחשב את ספרת הסכום, ושער AND מחשב את הנשא.</p>
+    <div class="ha-inputs reveal" style="animation-delay:.44s">
+      <div class="toggle" id="ha" tabindex="0" role="button" aria-label="כניסה A של המחבר"><div class="nm">A</div><div class="v" id="hav-a">0</div></div>
+      <div class="toggle" id="hb" tabindex="0" role="button" aria-label="כניסה B של המחבר"><div class="nm">B</div><div class="v" id="hav-b">0</div></div>
+    </div>
+    <p class="ha-eq reveal" id="ha-eq" style="animation-delay:.46s"></p>
+    <div class="chips reveal" style="animation-delay:.48s">
+      <div class="chip sum"><div class="top"><span>ספרת סכום (Sum)</span><span class="gate">A ⊕ B</span></div><div class="big" id="ha-sum">0</div></div>
+      <div class="chip carry"><div class="top"><span>נשא (Carry)</span><span class="gate">A · B</span></div><div class="big" id="ha-carry">0</div></div>
+    </div>
+    <table id="ha-tt" class="reveal" style="animation-delay:.5s"></table>
   </div>
-  <p class="ha-eq reveal" id="ha-eq" style="animation-delay:.46s"></p>
-  <div class="chips reveal" style="animation-delay:.48s">
-    <div class="chip sum"><div class="top"><span>ספרת סכום (Sum)</span><span class="gate">A ⊕ B</span></div><div class="big" id="ha-sum">0</div></div>
-    <div class="chip carry"><div class="top"><span>נשא (Carry)</span><span class="gate">A · B</span></div><div class="big" id="ha-carry">0</div></div>
-  </div>
-  <table id="ha-tt" class="reveal" style="animation-delay:.5s"></table>
 
   <footer class="reveal" style="animation-delay:.54s">נבנה ככלי עזר להוראת אלקטרוניקה ומחשבים · ניתן לאירוח חופשי ב‑GitHub Pages</footer>
 </div>
 
 <script>
-const LET=['A','B','C','D'];
-const ON='#f5a623';
-const sum=v=>v.reduce((a,x)=>a+x,0);
+const LET=['A','B','C','D'], ON='#f5a623';
+const sumv=v=>v.reduce((a,x)=>a+x,0);
+const rand=n=>Math.floor(Math.random()*n);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
 const GATES={
  AND:{multi:true,f:v=>v.every(x=>x)?1:0,sep:' · ',d:_=>'פלט 1 רק כאשר <b>כל</b> הכניסות הן 1.'},
  OR:{multi:true,f:v=>v.some(x=>x)?1:0,sep:' + ',d:_=>'פלט 1 כאשר <b>לפחות אחת</b> מהכניסות היא 1.'},
- NOT:{multi:false,f:v=>v[0]?0:1,d:_=>'הופך את הערך — 0 הופך ל‑1 ו‑1 הופך ל‑0. לשער זה תמיד כניסה אחת.'},
- NAND:{multi:true,f:v=>v.every(x=>x)?0:1,sep:' · ',inv:true,d:_=>'ההפך מ‑AND — פלט 0 רק כאשר כל הכניסות 1. <b>שער אוניברסלי</b>.'},
- NOR:{multi:true,f:v=>v.some(x=>x)?0:1,sep:' + ',inv:true,d:_=>'ההפך מ‑OR — פלט 1 רק כאשר כל הכניסות 0. <b>שער אוניברסלי</b>.'},
- XOR:{multi:true,f:v=>(sum(v)%2)?1:0,sep:' \u2295 ',d:n=>n>2?'פלט 1 כאשר מספר הכניסות שערכן 1 הוא <b>אי‑זוגי</b>.':'פלט 1 כאשר הכניסות <b>שונות</b> זו מזו.'},
- XNOR:{multi:true,f:v=>(sum(v)%2)?0:1,sep:' \u2295 ',inv:true,d:n=>n>2?'פלט 1 כאשר מספר הכניסות שערכן 1 הוא <b>זוגי</b>.':'פלט 1 כאשר הכניסות <b>זהות</b> זו לזו.'}
+ NOT:{multi:false,f:v=>v[0]?0:1,d:_=>'הופך את הערך — 0 הופך ל‑1 ו‑1 הופך ל‑0.'},
+ NAND:{multi:true,f:v=>v.every(x=>x)?0:1,sep:' · ',inv:true,d:_=>'ההפך מ‑AND — פלט 0 רק כאשר כל הכניסות 1.'},
+ NOR:{multi:true,f:v=>v.some(x=>x)?0:1,sep:' + ',inv:true,d:_=>'ההפך מ‑OR — פלט 1 רק כאשר כל הכניסות 0.'},
+ XOR:{multi:true,f:v=>(sumv(v)%2)?1:0,sep:' \u2295 ',d:n=>n>2?'פלט 1 כאשר מספר הכניסות שערכן 1 הוא <b>אי‑זוגי</b>.':'פלט 1 כאשר הכניסות <b>שונות</b> זו מזו.'},
+ XNOR:{multi:true,f:v=>(sumv(v)%2)?0:1,sep:' \u2295 ',inv:true,d:n=>n>2?'פלט 1 כאשר מספר הכניסות שערכן 1 הוא <b>זוגי</b>.':'פלט 1 כאשר הכניסות <b>זהות</b> זו לזו.'}
 };
+const LVLDESC={1:'דרגה 1 — השערים AND, OR, NOT (2 כניסות).',2:'דרגה 2 — נוספו השערים השוללים NAND ו‑NOR.',3:'דרגה 3 — נוספו XOR ו‑XNOR, ולעיתים 3 כניסות.',4:'דרגה 4 — כל השערים, עם 2 עד 4 כניסות.'};
+
+let mode='explore', ctype='predict';
 let cur='AND', nSel=2, vals=[0,0], hinted=false;
+let q=null, answered=false, score=0, total=0, streak=0, best=0, lastResult={};
+const $=id=>document.getElementById(id);
 
 function geo(n){
- const span=(n-1)*58;
- const gh=Math.max(48, span/2+26);
- const cy=46+gh;
- const H=Math.round(cy+gh+46);
+ const span=(n-1)*58, gh=Math.max(48,span/2+26), cy=46+gh;
  const ys=[]; for(let i=0;i<n;i++) ys.push(Math.round(cy-span/2+i*58));
- return {gh,cy:Math.round(cy),H,ys,top:Math.round(cy-gh),bot:Math.round(cy+gh)};
+ return {gh,cy:Math.round(cy),H:Math.round(cy+gh+46),ys,top:Math.round(cy-gh),bot:Math.round(cy+gh)};
 }
 function gateSVG(t,g){
- const st='#4b5563',fl='#ffffff',cy=g.cy,top=g.top,bot=g.bot;
- let body='',outX=300,bub=null;
- if(t==='AND'||t==='NAND'){
-  const r=g.gh, tip=252+r;
-  body=`<path d="M200,${top} L252,${top} A${r},${r} 0 0 1 252,${bot} L200,${bot} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
-  outX=tip; if(t==='NAND'){bub=tip+9; outX=tip+18;}
- } else if(t==='OR'||t==='NOR'){
-  const tip=318;
-  body=`<path d="M198,${top} Q228,${cy} 198,${bot} Q293,${bot} ${tip},${cy} Q293,${top} 198,${top} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
-  outX=tip; if(t==='NOR'){bub=327; outX=336;}
- } else if(t==='XOR'||t==='XNOR'){
-  const tip=330;
-  body=`<path d="M210,${top} Q240,${cy} 210,${bot} Q305,${bot} ${tip},${cy} Q305,${top} 210,${top} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/><path d="M196,${top} Q226,${cy} 196,${bot}" fill="none" stroke="${st}" stroke-width="2.5"/>`;
-  outX=tip; if(t==='XNOR'){bub=339; outX=348;}
- } else if(t==='NOT'){
-  body=`<path d="M200,${cy-45} L200,${cy+45} L290,${cy} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
-  bub=300; outX=309;
- }
+ const st='#4b5563',fl='#ffffff',cy=g.cy,top=g.top,bot=g.bot;let body='',outX=300,bub=null;
+ if(t==='AND'||t==='NAND'){const r=g.gh,tip=252+r;body=`<path d="M200,${top} L252,${top} A${r},${r} 0 0 1 252,${bot} L200,${bot} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;outX=tip;if(t==='NAND'){bub=tip+9;outX=tip+18;}}
+ else if(t==='OR'||t==='NOR'){const tip=318;body=`<path d="M198,${top} Q228,${cy} 198,${bot} Q293,${bot} ${tip},${cy} Q293,${top} 198,${top} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;outX=tip;if(t==='NOR'){bub=327;outX=336;}}
+ else if(t==='XOR'||t==='XNOR'){const tip=330;body=`<path d="M210,${top} Q240,${cy} 210,${bot} Q305,${bot} ${tip},${cy} Q305,${top} 210,${top} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/><path d="M196,${top} Q226,${cy} 196,${bot}" fill="none" stroke="${st}" stroke-width="2.5"/>`;outX=tip;if(t==='XNOR'){bub=339;outX=348;}}
+ else if(t==='NOT'){body=`<path d="M200,${cy-45} L200,${cy+45} L290,${cy} Z" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;bub=300;outX=309;}
  if(bub!==null) body+=`<circle cx="${bub}" cy="${cy}" r="9" fill="${fl}" stroke="${st}" stroke-width="2.5"/>`;
  return {svg:body,outX};
 }
-function wire(d,on){
- let s=`<path d="${d}" fill="none" stroke="${on?ON:'#b6bcc6'}" stroke-width="${on?3.6:3.2}" stroke-linecap="round" stroke-linejoin="round"/>`;
- if(on) s+=`<path class="flow" d="${d}"/>`;
- return s;
+function wire(d,on){let s=`<path d="${d}" fill="none" stroke="${on?ON:'#b6bcc6'}" stroke-width="${on?3.6:3.2}" stroke-linecap="round" stroke-linejoin="round"/>`;if(on)s+=`<path class="flow" d="${d}"/>`;return s;}
+function drawCircuit(t,n,v,reveal,interactive){
+ const g=geo(n);$('circuit').setAttribute('viewBox',`0 0 480 ${g.H}`);
+ const gd=gateSVG(t,g);$('gate').innerHTML=gd.svg;
+ let w='';for(let i=0;i<n;i++) w+=wire(`M77,${g.ys[i]} L215,${g.ys[i]}`,v[i]);
+ const out=GATES[t].f(v);w+=wire(`M${gd.outX},${g.cy} L413,${g.cy}`,reveal?out:false);
+ $('wires').innerHTML=w;buildNodes(g,n,v,interactive);buildOutput(g,out,reveal);return {g,out};
 }
-function buildNodes(g,n){
+function buildNodes(g,n,v,interactive){
  let s='';
- for(let i=0;i<n;i++){
-  const y=g.ys[i],v=vals[i];
-  const fill=v?ON:'#ffffff',stroke=v?'#c77f12':'#c7cdd6',tcol=v?'#3d2600':'#6b7280',flt=v?' filter="url(#glow)"':'';
-  s+=`<g class="node" data-i="${i}" tabindex="0" role="button" aria-label="כניסה ${LET[i]}, ערך ${v}, לחצו לשינוי">`
-   +`<circle cx="55" cy="${y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2"${flt}/>`
-   +`<text x="55" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="20" font-weight="600" fill="${tcol}">${v}</text>`
+ for(let i=0;i<n;i++){const y=g.ys[i],val=v[i];
+  const fill=val?ON:'#ffffff',stroke=val?'#c77f12':'#c7cdd6',tcol=val?'#3d2600':'#6b7280',flt=val?' filter="url(#glow)"':'';
+  const attrs=interactive?`class="node" data-i="${i}" tabindex="0" role="button" aria-label="כניסה ${LET[i]}, ערך ${val}, לחצו לשינוי"`:`class="node nolock" aria-label="כניסה ${LET[i]}, ערך ${val}"`;
+  s+=`<g ${attrs}><circle cx="55" cy="${y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2"${flt}/>`
+   +`<text x="55" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="20" font-weight="600" fill="${tcol}">${val}</text>`
    +`<text x="25" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="Rubik" font-size="14" font-weight="500" fill="#6b7280">${LET[i]}</text>`;
-  if(i===0 && !hinted) s+=`<circle class="tap" cx="55" cy="${y}" r="28" fill="none" stroke="#2563eb" stroke-width="2"/>`;
-  s+=`</g>`;
- }
- document.getElementById('inodes').innerHTML=s;
+  if(i===0&&!hinted&&interactive) s+=`<circle class="tap" cx="55" cy="${y}" r="28" fill="none" stroke="#2563eb" stroke-width="2"/>`;
+  s+=`</g>`;}
+ $('inodes').innerHTML=s;
 }
-function buildOutput(g,out){
- const fill=out?ON:'#ffffff',stroke=out?'#c77f12':'#c7cdd6',tcol=out?'#3d2600':'#6b7280',flt=out?' filter="url(#glow)"':'';
- document.getElementById('onode').innerHTML=
-  `<circle class="halo${out?' on':''}" cx="440" cy="${g.cy}" r="33"/>`
+function buildOutput(g,out,reveal){
+ const val=reveal?out:'?',lit=reveal&&out;
+ const fill=lit?ON:'#ffffff',stroke=lit?'#c77f12':'#c7cdd6',tcol=lit?'#3d2600':(reveal?'#6b7280':'#9aa0aa'),flt=lit?' filter="url(#glow)"':'';
+ $('onode').innerHTML=`<circle class="halo${lit?' on':''}" cx="440" cy="${g.cy}" r="33"/>`
   +`<text x="440" y="${g.cy-38}" text-anchor="middle" font-family="Rubik" font-size="15" font-weight="500" fill="#6b7280">Y</text>`
   +`<circle cx="440" cy="${g.cy}" r="27" fill="${fill}" stroke="${stroke}" stroke-width="2"${flt}/>`
-  +`<text x="440" y="${g.cy}" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="24" font-weight="600" fill="${tcol}">${out}</text>`;
+  +`<text x="440" y="${g.cy}" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono" font-size="${val==='?'?27:24}" font-weight="600" fill="${tcol}">${val}</text>`;
 }
-function exprFor(t,n){
- if(t==='NOT') return 'Y = <span class="ovl">A</span>';
- const inner=LET.slice(0,n).join(GATES[t].sep);
- return GATES[t].inv?`Y = <span class="ovl">${inner}</span>`:`Y = ${inner}`;
+function exprFor(t,n){if(t==='NOT')return 'Y = <span class="ovl">A</span>';const inner=LET.slice(0,n).join(GATES[t].sep);return GATES[t].inv?`Y = <span class="ovl">${inner}</span>`:`Y = ${inner}`;}
+function buildTable(t,n,hv){
+ const L=LET.slice(0,n);let h='<thead><tr>'+L.map(x=>`<th>${x}</th>`).join('')+'<th>Y</th></tr></thead><tbody>';
+ for(let r=0;r<(1<<n);r++){const bits=[];for(let i=0;i<n;i++) bits.push((r>>(n-1-i))&1);
+  const act=hv&&bits.every((b,i)=>b===hv[i])?' class="act"':'';
+  h+=`<tr${act}>`+bits.map(b=>`<td>${b}</td>`).join('')+`<td>${GATES[t].f(bits)}</td></tr>`;}
+ $('tt').innerHTML=h+'</tbody>';
 }
 function buildPills(){
- const box=document.getElementById('pills');box.innerHTML='';
- Object.keys(GATES).forEach(t=>{
-  const b=document.createElement('button');
-  b.className='pill'+(t===cur?' active':'');b.textContent=t;b.setAttribute('aria-pressed',t===cur);
-  b.onclick=()=>{cur=t;render();};box.appendChild(b);
- });
- const nb=document.getElementById('ninputs');nb.innerHTML='';
- [2,3,4].forEach(k=>{
-  const b=document.createElement('button');
-  b.className='pill';b.textContent=k;b.dataset.n=k;
-  b.onclick=()=>{nSel=k;render();};nb.appendChild(b);
- });
+ const box=$('pills');box.innerHTML='';
+ Object.keys(GATES).forEach(t=>{const b=document.createElement('button');b.className='pill'+(t===cur?' active':'');b.textContent=t;b.setAttribute('aria-pressed',t===cur);b.onclick=()=>{cur=t;render();};box.appendChild(b);});
+ const nb=$('ninputs');nb.innerHTML='';
+ [2,3,4].forEach(k=>{const b=document.createElement('button');b.className='pill';b.textContent=k;b.dataset.n=k;b.onclick=()=>{nSel=k;render();};nb.appendChild(b);});
 }
-function buildTable(t,n){
- const L=LET.slice(0,n);
- let h='<thead><tr>'+L.map(x=>`<th>${x}</th>`).join('')+'<th>Y</th></tr></thead><tbody>';
- for(let r=0;r<(1<<n);r++){
-  const bits=[];for(let i=0;i<n;i++) bits.push((r>>(n-1-i))&1);
-  const y=GATES[t].f(bits);
-  const act=bits.every((b,i)=>b===vals[i])?' class="act"':'';
-  h+=`<tr${act}>`+bits.map(b=>`<td>${b}</td>`).join('')+`<td>${y}</td></tr>`;
- }
- document.getElementById('tt').innerHTML=h+'</tbody>';
-}
-function render(){
- const t=cur, n=GATES[t].multi?nSel:1;
- while(vals.length<n) vals.push(0);
- vals.length=n;
- const g=geo(n);
- document.getElementById('circuit').setAttribute('viewBox',`0 0 480 ${g.H}`);
- const gd=gateSVG(t,g);
- document.getElementById('gate').innerHTML=gd.svg;
- let w='';
- for(let i=0;i<n;i++) w+=wire(`M77,${g.ys[i]} L215,${g.ys[i]}`,vals[i]);
- const out=GATES[t].f(vals);
- w+=wire(`M${gd.outX},${g.cy} L413,${g.cy}`,out);
- document.getElementById('wires').innerHTML=w;
- buildNodes(g,n); buildOutput(g,out); hinted=true;
- document.querySelectorAll('#pills .pill').forEach(x=>{const on=x.textContent===cur;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on);});
- document.querySelectorAll('#ninputs .pill').forEach(x=>{
-  const on=(+x.dataset.n===n)&&GATES[t].multi;
-  x.classList.toggle('active',on);
-  if(GATES[t].multi){x.removeAttribute('disabled');} else {x.setAttribute('disabled','');x.classList.remove('active');}
- });
- document.getElementById('ninote').textContent=GATES[t].multi?'':'לשער NOT יש כניסה אחת בלבד, לכן בחירת מספר הכניסות אינה זמינה עבורו.';
- document.getElementById('desc').innerHTML='<span>'+GATES[t].d(n)+'</span>';
- document.getElementById('expr').innerHTML=exprFor(t,n);
- document.getElementById('now').textContent=LET.slice(0,n).map((x,i)=>x+'='+vals[i]).join(', ')+'  \u2192  Y='+out;
- document.getElementById('now').style.color=out?'var(--on-text)':'var(--muted)';
- buildTable(t,n);
-}
-document.getElementById('inodes').addEventListener('click',e=>{const g=e.target.closest('.node');if(g){vals[+g.dataset.i]^=1;render();}});
-document.getElementById('inodes').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const g=e.target.closest('.node');if(g){e.preventDefault();vals[+g.dataset.i]^=1;render();}}});
 
+/* ---- EXPLORE ---- */
+function render(){
+ $('panel').style.display='';$('readout').style.display='';$('tt').style.display='';
+ const t=cur,n=GATES[t].multi?nSel:1;
+ while(vals.length<n) vals.push(0);vals.length=n;
+ const r=drawCircuit(t,n,vals,true,true);hinted=true;
+ document.querySelectorAll('#pills .pill').forEach(x=>{const on=x.textContent===cur;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on);});
+ document.querySelectorAll('#ninputs .pill').forEach(x=>{const on=(+x.dataset.n===n)&&GATES[t].multi;x.classList.toggle('active',on);if(GATES[t].multi)x.removeAttribute('disabled');else{x.setAttribute('disabled','');x.classList.remove('active');}});
+ $('ninote').textContent=GATES[t].multi?'':'לשער NOT יש כניסה אחת בלבד, לכן בחירת מספר הכניסות אינה זמינה עבורו.';
+ $('desc').innerHTML='<span>'+GATES[t].d(n)+'</span>';
+ $('expr').innerHTML=exprFor(t,n);
+ $('now').textContent=LET.slice(0,n).map((x,i)=>x+'='+vals[i]).join(', ')+'  \u2192  Y='+r.out;
+ $('now').style.color=r.out?'var(--on-text)':'var(--muted)';
+ buildTable(t,n,vals);
+}
+$('inodes').addEventListener('click',e=>{if(mode!=='explore')return;const g=e.target.closest('.node');if(g&&g.dataset.i!==undefined){vals[+g.dataset.i]^=1;render();}});
+$('inodes').addEventListener('keydown',e=>{if(mode!=='explore')return;if(e.key==='Enter'||e.key===' '){const g=e.target.closest('.node');if(g&&g.dataset.i!==undefined){e.preventDefault();vals[+g.dataset.i]^=1;render();}}});
+
+/* ---- CHALLENGE shared ---- */
+function levelFor(){return score<3?1:score<6?2:score<9?3:4;}
+function poolFor(l){
+ if(l===1)return{gates:['AND','OR','NOT'],ns:[2]};
+ if(l===2)return{gates:['AND','OR','NOT','NAND','NOR'],ns:[2]};
+ if(l===3)return{gates:['AND','OR','NOT','NAND','NOR','XOR','XNOR'],ns:[2,3]};
+ return{gates:Object.keys(GATES),ns:[2,3,4]};
+}
+function updateStats(){$('stats').innerHTML=`ניקוד: <b>${score}/${total}</b> · רצף: <b>${streak}</b> · שיא: <b>${best}</b> · דרגה: <b>${levelFor()}</b>`;$('lvlnote').textContent=LVLDESC[levelFor()];}
+function setAnswerUI(){
+ $('answerBtns').style.display=(ctype==='predict'&&!answered)?'flex':'none';
+ $('optionsWrap').style.display=(ctype==='identify'&&!answered)?'flex':'none';
+ $('checkWrap').style.display=(ctype==='fill'&&!answered)?'block':'none';
+}
+function feedbackHTML(ok,wrongMsg,rule){
+ $('feedbackWrap').innerHTML=`<div class="feedback ${ok?'ok':'no'}">`+(ok?'\u2713 נכון!':('\u2717 '+wrongMsg))+(rule?`<span class="rule">${rule}</span>`:'')+`</div><button class="nextbtn" id="nextBtn">שאלה הבאה \u2190</button>`;
+ $('nextBtn').onclick=newQuestion;
+}
+function clearFeedback(){$('feedbackWrap').innerHTML='';}
+function scoreResult(ok){total++;if(ok){score++;streak++;best=Math.max(best,streak);}else streak=0;lastResult={ok};}
+function newQuestion(){
+ answered=false;const p=poolFor(levelFor());
+ if(ctype==='predict'){
+  const gate=p.gates[rand(p.gates.length)];const n=GATES[gate].multi?p.ns[rand(p.ns.length)]:1;
+  const v=[];for(let i=0;i<n;i++) v.push(Math.random()<.5?0:1);q={gate,n,vals:v};
+ } else if(ctype==='identify'){
+  const cand=p.gates.filter(x=>x!=='NOT');const gate=cand[rand(cand.length)];
+  q={gate,n:2,options:shuffle(cand.slice())};
+ } else {
+  const gate=p.gates[rand(p.gates.length)];q={gate,n:GATES[gate].multi?2:1,fill:null};
+ }
+ renderChallenge();
+}
+function renderChallenge(){updateStats();if(ctype==='predict')renderPredict();else if(ctype==='identify')renderIdentify();else renderFill();}
+
+/* ---- predict ---- */
+function renderPredict(){
+ $('panel').style.display='';$('readout').style.display='';
+ drawCircuit(q.gate,q.n,q.vals,answered,false);
+ const out=GATES[q.gate].f(q.vals);
+ $('expr').innerHTML=exprFor(q.gate,q.n);
+ const inp=LET.slice(0,q.n).map((x,i)=>x+'='+q.vals[i]).join(', ');
+ $('now').textContent=answered?`${inp}  \u2192  Y=${out}`:inp;
+ $('now').style.color=(answered&&out)?'var(--on-text)':'var(--muted)';
+ $('qprompt').innerHTML=`מה ערך הפלט <b>Y</b>? — שער <b>${q.gate}</b>${q.n>1?` · ${q.n} כניסות`:''}`;
+ setAnswerUI();
+ if(!answered){$('tt').style.display='none';clearFeedback();}
+ else{feedbackHTML(lastResult.ok,`הפלט הנכון הוא ${lastResult.correct}`,GATES[q.gate].d(q.n));$('tt').style.display='';buildTable(q.gate,q.n,q.vals);}
+}
+function answerPredict(guess){
+ if(answered)return;answered=true;const correct=GATES[q.gate].f(q.vals);
+ const ok=(guess===correct);total++;if(ok){score++;streak++;best=Math.max(best,streak);}else streak=0;
+ lastResult={ok,correct};renderChallenge();
+}
+document.querySelectorAll('#answerBtns .abtn').forEach(b=>b.onclick=()=>answerPredict(+b.dataset.g));
+
+/* ---- identify ---- */
+function renderIdentify(){
+ $('panel').style.display='none';
+ $('qprompt').innerHTML='איזה שער מתאים לטבלת האמת הבאה?';
+ $('tt').style.display='';buildTable(q.gate,q.n,null);
+ const ro=$('readout');
+ if(answered){ro.style.display='';$('expr').innerHTML=exprFor(q.gate,q.n);$('now').textContent='השער הוא '+q.gate;$('now').style.color='var(--on-text)';}
+ else ro.style.display='none';
+ setAnswerUI();
+ if(!answered){const wrap=$('optionsWrap');wrap.innerHTML='';q.options.forEach(name=>{const b=document.createElement('button');b.className='optbtn';b.textContent=name;b.onclick=()=>answerIdentify(name);wrap.appendChild(b);});clearFeedback();}
+ else feedbackHTML(lastResult.ok,`השער הנכון הוא ${q.gate}`,GATES[q.gate].d(q.n));
+}
+function answerIdentify(name){if(answered)return;answered=true;scoreResult(name===q.gate);renderChallenge();}
+
+/* ---- fill ---- */
+function renderFill(){
+ $('panel').style.display='none';
+ $('qprompt').innerHTML=`השלימו את עמודת הפלט <b>Y</b> עבור שער <b>${q.gate}</b>${q.n>1?` · ${q.n} כניסות`:''}`;
+ const ro=$('readout');
+ if(answered){ro.style.display='';$('expr').innerHTML=exprFor(q.gate,q.n);$('now').textContent='';}
+ else ro.style.display='none';
+ $('tt').style.display='';setAnswerUI();
+ if(!answered){buildFillTable();$('checkWrap').innerHTML='<button class="checkbtn" id="checkBtn">בדקו את הטבלה</button>';$('checkBtn').onclick=checkFill;clearFeedback();}
+}
+function buildFillTable(){
+ const t=q.gate,n=q.n,L=LET.slice(0,n);
+ let h='<thead><tr>'+L.map(x=>`<th>${x}</th>`).join('')+'<th>Y</th></tr></thead><tbody>';
+ for(let r=0;r<(1<<n);r++){const bits=[];for(let i=0;i<n;i++) bits.push((r>>(n-1-i))&1);
+  h+=`<tr>`+bits.map(b=>`<td>${b}</td>`).join('')+`<td class="ycell"><button data-r="${r}">?</button></td></tr>`;}
+ $('tt').innerHTML=h+'</tbody>';
+ q.fill=new Array(1<<n).fill(null);
+ document.querySelectorAll('#tt .ycell button').forEach(b=>b.onclick=()=>{const r=+b.dataset.r;q.fill[r]=q.fill[r]===null?0:(q.fill[r]?0:1);b.textContent=q.fill[r];});
+}
+function checkFill(){
+ if(q.fill.some(x=>x===null)){$('feedbackWrap').innerHTML='<div class="feedback no">יש להשלים את כל התאים לפני הבדיקה.</div>';return;}
+ answered=true;const t=q.gate,n=q.n;let allok=true;
+ for(let r=0;r<(1<<n);r++){const bits=[];for(let i=0;i<n;i++) bits.push((r>>(n-1-i))&1);
+  const correct=GATES[t].f(bits),cell=document.querySelector(`#tt .ycell button[data-r="${r}"]`),td=cell.parentNode;
+  if(q.fill[r]===correct){td.className='ycell cok';}else{td.className='ycell cno';allok=false;}
+  cell.outerHTML=String(correct);}
+ scoreResult(allok);updateStats();
+ $('readout').style.display='';$('expr').innerHTML=exprFor(t,n);$('now').textContent='';
+ feedbackHTML(allok,'התאים האדומים תוקנו לערך הנכון',GATES[t].d(n));setAnswerUI();
+}
+
+/* ---- mode + subtype ---- */
+function setMode(m){
+ mode=m;
+ document.querySelectorAll('#modes .pill').forEach(x=>{const on=x.dataset.mode===m;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on);});
+ const ex=(m==='explore');
+ $('exploreCtl').style.display=ex?'':'none';
+ $('challengeCtl').style.display=ex?'none':'';
+ $('answerArea').style.display=ex?'none':'';
+ $('bonus').style.display=ex?'':'none';
+ $('hint').textContent=ex?'לחצו על העיגולים (A, B, C, D) כדי להחליף בין 0 ל‑1':'התבוננו בנתון — ונסו לפני שתבדקו';
+ if(ex){render();} else {newQuestion();}
+}
+document.querySelectorAll('#modes .pill').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+document.querySelectorAll('#subtypes .pill').forEach(b=>b.onclick=()=>{
+ ctype=b.dataset.ct;
+ document.querySelectorAll('#subtypes .pill').forEach(x=>{const on=x.dataset.ct===ctype;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on);});
+ $('hint').textContent= ctype==='predict' ? 'התבוננו בכניסות ובשער — ונחשו את הפלט' : 'התבוננו בנתון — ונסו לפני שתבדקו';
+ newQuestion();
+});
+
+/* ---- half-adder bonus ---- */
 let ha={a:0,b:0};
 function haSet(k){ha[k]=ha[k]?0:1;haRender();}
-function haTable(){
- let h='<thead><tr><th>A</th><th>B</th><th>נשא</th><th>סכום</th></tr></thead><tbody>';
- for(let i=0;i<2;i++)for(let j=0;j<2;j++){
-  const s=(i^j),c=(i&&j)?1:0,act=(i===ha.a&&j===ha.b)?' class="act"':'';
-  h+=`<tr${act}><td>${i}</td><td>${j}</td><td>${c}</td><td>${s}</td></tr>`;
- }
- document.getElementById('ha-tt').innerHTML=h+'</tbody>';
-}
-function haRender(){
- const s=(ha.a^ha.b),c=(ha.a&&ha.b)?1:0;
- document.getElementById('hav-a').textContent=ha.a;
- document.getElementById('hav-b').textContent=ha.b;
- document.getElementById('ha').classList.toggle('hi',!!ha.a);
- document.getElementById('hb').classList.toggle('hi',!!ha.b);
- document.getElementById('ha-sum').textContent=s;
- document.getElementById('ha-carry').textContent=c;
- document.getElementById('ha-eq').innerHTML=`${ha.a} + ${ha.b} = <b>${c}${s}</b><sub style="font-size:11px">2</sub>`;
- haTable();
-}
-function bindToggle(id,fn){
- const el=document.getElementById(id);
- el.addEventListener('click',fn);
- el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});
-}
-bindToggle('ha',()=>haSet('a'));
-bindToggle('hb',()=>haSet('b'));
+function haTable(){let h='<thead><tr><th>A</th><th>B</th><th>נשא</th><th>סכום</th></tr></thead><tbody>';
+ for(let i=0;i<2;i++)for(let j=0;j<2;j++){const s=(i^j),c=(i&&j)?1:0,act=(i===ha.a&&j===ha.b)?' class="act"':'';h+=`<tr${act}><td>${i}</td><td>${j}</td><td>${c}</td><td>${s}</td></tr>`;}
+ $('ha-tt').innerHTML=h+'</tbody>';}
+function haRender(){const s=(ha.a^ha.b),c=(ha.a&&ha.b)?1:0;
+ $('hav-a').textContent=ha.a;$('hav-b').textContent=ha.b;$('ha').classList.toggle('hi',!!ha.a);$('hb').classList.toggle('hi',!!ha.b);
+ $('ha-sum').textContent=s;$('ha-carry').textContent=c;$('ha-eq').innerHTML=`${ha.a} + ${ha.b} = <b>${c}${s}</b><sub style="font-size:11px">2</sub>`;haTable();}
+function bindToggle(id,fn){const el=$(id);el.addEventListener('click',fn);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});}
+bindToggle('ha',()=>haSet('a'));bindToggle('hb',()=>haSet('b'));
 
-buildPills();render();haRender();
+buildPills();setMode('explore');haRender();
 </script>
 </body>
 </html>
